@@ -1,0 +1,32 @@
+{
+  "creator": "duplicate-kriller 1.4.9",
+  "dupes": [
+    [
+      [
+        "/home/mat/git/dupe-krill-analyze/example-dir/foo/a",
+        "/home/mat/git/dupe-krill-analyze/example-dir/bar/a"
+      ]
+    ],
+    [
+      [
+        "/home/mat/git/dupe-krill-analyze/example-dir/zar/b",
+        "/home/mat/git/dupe-krill-analyze/example-dir/moo/b"
+      ],
+      [
+        "/home/mat/git/dupe-krill-analyze/example-dir/foo/b"
+      ]
+    ]
+  ],
+  "stats": {
+    "added": 6,
+    "skipped": 0,
+    "dupes": 1,
+    "bytes_deduplicated": 2,
+    "hardlinks": 2,
+    "bytes_saved_by_hardlinks": 4
+  },
+  "scanDuration": {
+    "secs": 0,
+    "nanos": 122490
+  }
+}
