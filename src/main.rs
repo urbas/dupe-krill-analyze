@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
+mod cmd_list_dirs;
 mod cmd_related_dirs;
 mod dir_mapping;
 mod dupe_krill_report;
@@ -34,6 +35,8 @@ enum Commands {
         #[arg(required = true)]
         directory: PathBuf,
     },
+    /// Lists all directories that contain duplicate files. Each line has the format: <number of dupes> <number of related dirs> <dir path>
+    ListDirs,
 }
 
 fn main() {
@@ -60,6 +63,7 @@ fn main() {
 
     let exit_code = match &cli.command {
         Commands::RelatedDirs { directory } => cmd_related_dirs::handle_cmd(&report, directory),
+        Commands::ListDirs => cmd_list_dirs::handle_cmd(&report),
     };
     std::process::exit(exit_code);
 }
