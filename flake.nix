@@ -17,7 +17,12 @@
 
         cargoToml = builtins.fromTOML (builtins.readFile ./Cargo.toml);
 
-        rustPkg = pkgs.rustPlatform.buildRustPackage rec {
+        binDeps = with pkgs; [
+          diffutils
+        ];
+
+        rustPkg = pkgs.rustPlatform.buildRustPackage {
+          buildInputs = binDeps;
           nativeBuildInputs = [ pkgs.makeWrapper ];
           pname = cargoToml.package.name;
           src = self;
@@ -25,6 +30,9 @@
           cargoLock = {
             lockFile = ./Cargo.lock;
           };
+          postInstall = ''
+            wrapProgram $out/bin/${cargoToml.package.name} --prefix PATH : ${pkgs.lib.makeBinPath binDeps}
+          '';
         };
 
         dev-deps = with pkgs; [
@@ -43,6 +51,7 @@
 
         devShells.default = pkgs.mkShell {
           packages = dev-deps;
+          inputsFrom = [ rustPkg ];
         };
       }
     );

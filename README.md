@@ -5,7 +5,8 @@ reports.
 
 ## Installation
 
-Use nix (see [nix installation instructions](https://nixos.org/download/)):
+Currently the only supported way to run this tool is via nix (see [nix
+installation instructions]):
 
 ```bash
 # Run directly:
@@ -19,11 +20,32 @@ dupe-krill-analyze related-dirs help
 ## Usage
 
 ```bash
-# Set the dupe-krill report you'd like to analyze:
-export DUPE_KRILL_ANALYZER_INPUT_REPORT=<dupe-krill report path>
+dupe-krill-analyze -d <dupe-krill JSON report path> related-dirs <some dir>
+```
 
-# Add
+You can also set the dupe-krill report via this environment variable:
+
+```bash
+export DUPE_KRILL_ANALYZER_INPUT_REPORT=<dupe-krill JSON report path>
 
 # Now run a bunch of analyses, for example:
 dupe-krill-analyze related-dirs <some dir>
+dupe-krill-analyze related-dirs <other dir>
 ```
+
+## Development
+
+Install nix (see [nix installation instructions]) and run:
+
+```bash
+# This command will open a new shell where you can run `cargo`:
+nix develop
+
+# Now you're in the nix develop shell and can run:
+cargo test
+cargo run -- help
+cargo clippy -- -D warnings
+cargo fmt
+```
+
+[nix installation instructions]: https://nixos.org/download/
