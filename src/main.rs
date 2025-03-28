@@ -5,8 +5,10 @@ mod cmd_dupe_dirs;
 mod cmd_dupes;
 mod cmd_list_dirs;
 mod cmd_related_dirs;
+mod cmd_subsumed_dirs;
 mod dir_mapping;
 mod dupe_krill_report;
+mod file_utils;
 
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
@@ -51,6 +53,13 @@ enum Commands {
         #[arg(required = true)]
         directories: Vec<PathBuf>,
     },
+    /// Lists directories that are contained by at least one of the given directories.
+    SubsumedDirs {
+        /// The directories for which to find subsumed ones.
+        #[arg(required = true)]
+        directories: Vec<PathBuf>,
+    },
+    // Add the `ContainingDirs` command. It's the same as SubsumedDirs but the reverse (it lists directories that contain all of the given directories). AI!
 }
 
 fn main() {
@@ -80,6 +89,9 @@ fn main() {
         Commands::ListDirs => cmd_list_dirs::handle_cmd(&report),
         Commands::Dupes { file } => cmd_dupes::handle_cmd(&report, file),
         Commands::DupeDirs { directories } => cmd_dupe_dirs::handle_cmd(&report, directories),
+        Commands::SubsumedDirs { directories } => {
+            cmd_subsumed_dirs::handle_cmd(&report, directories)
+        }
     };
     std::process::exit(exit_code);
 }
