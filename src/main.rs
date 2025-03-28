@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
+mod cmd_containing_dirs;
 mod cmd_dupe_dirs;
 mod cmd_dupes;
 mod cmd_list_dirs;
@@ -59,7 +60,12 @@ enum Commands {
         #[arg(required = true)]
         directories: Vec<PathBuf>,
     },
-    // Add the `ContainingDirs` command. It's the same as SubsumedDirs but the reverse (it lists directories that contain all of the given directories). AI!
+    /// Lists directories that contain all of the given directories.
+    ContainingDirs {
+        /// The directories for which to find containing ones.
+        #[arg(required = true)]
+        directories: Vec<PathBuf>,
+    },
 }
 
 fn main() {
@@ -91,6 +97,9 @@ fn main() {
         Commands::DupeDirs { directories } => cmd_dupe_dirs::handle_cmd(&report, directories),
         Commands::SubsumedDirs { directories } => {
             cmd_subsumed_dirs::handle_cmd(&report, directories)
+        }
+        Commands::ContainingDirs { directories } => {
+            cmd_containing_dirs::handle_cmd(&report, directories)
         }
     };
     std::process::exit(exit_code);
