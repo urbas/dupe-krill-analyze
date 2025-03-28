@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
+mod cmd_dupe_dirs;
 mod cmd_dupes;
 mod cmd_list_dirs;
 mod cmd_related_dirs;
@@ -44,6 +45,12 @@ enum Commands {
         #[arg(required = true)]
         file: PathBuf,
     },
+    /// Lists directories that contain exactly the same content as at least one of the given directories.
+    DupeDirs {
+        /// The directories for which to find identical ones.
+        #[arg(required = true)]
+        directories: Vec<PathBuf>,
+    },
 }
 
 fn main() {
@@ -72,6 +79,7 @@ fn main() {
         Commands::RelatedDirs { directory } => cmd_related_dirs::handle_cmd(&report, directory),
         Commands::ListDirs => cmd_list_dirs::handle_cmd(&report),
         Commands::Dupes { file } => cmd_dupes::handle_cmd(&report, file),
+        Commands::DupeDirs { directories } => cmd_dupe_dirs::handle_cmd(&report, directories),
     };
     std::process::exit(exit_code);
 }

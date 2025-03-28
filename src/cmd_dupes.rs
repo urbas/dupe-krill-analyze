@@ -39,7 +39,7 @@ pub fn handle_cmd(report: &DupeKrillReport, file: &Path) -> i32 {
     if found {
         0
     } else {
-        eprintln!("No duplicaes of {file:?} found.");
+        eprintln!("No duplicates of {file:?} found.");
         1
     }
 }
