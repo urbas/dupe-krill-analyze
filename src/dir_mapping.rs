@@ -27,6 +27,7 @@ impl DirMapping {
                 related_dirs.extend(dirs.iter());
             }
         }
+        related_dirs.remove(&target_dir.to_path_buf());
         Ok(related_dirs)
     }
 }
