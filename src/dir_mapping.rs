@@ -5,8 +5,8 @@ use crate::dupe_krill_report::DupeKrillReport;
 
 #[derive(Debug, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct DirMapping {
-    pub dirs_to_dupe_ids: HashMap<PathBuf, HashSet<i32>>,
-    pub dupe_ids_to_dirs: HashMap<i32, HashSet<PathBuf>>,
+    pub dirs_to_dupe_ids: HashMap<PathBuf, HashSet<u32>>,
+    pub dupe_ids_to_dirs: HashMap<u32, HashSet<PathBuf>>,
 }
 
 impl DirMapping {
@@ -29,6 +29,21 @@ impl DirMapping {
         }
         related_dirs.remove(&target_dir.to_path_buf());
         Ok(related_dirs)
+    }
+
+    /// Returns the number of duplicate files shared between two directories
+    pub fn count_shared_dupes(&self, dir1: &Path, dir2: &Path) -> Result<usize, String> {
+        let dupes_in_dir1 = self
+            .dirs_to_dupe_ids
+            .get(dir1)
+            .ok_or_else(|| format!("Unknown directory {dir1:?}."))?;
+
+        let dupes_in_dir2 = self
+            .dirs_to_dupe_ids
+            .get(dir2)
+            .ok_or_else(|| format!("Unknown directory {dir2:?}."))?;
+
+        Ok(dupes_in_dir1.intersection(dupes_in_dir2).count())
     }
 }
 
