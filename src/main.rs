@@ -39,6 +39,10 @@ enum Commands {
         /// The directory for which to find related directories
         #[arg(required = true)]
         directory: PathBuf,
+
+        /// Show the number of shared duplicate files for each directory
+        #[arg(long, short, default_value_t = false)]
+        show_shared_dupes: bool,
     },
     /// Lists all directories that contain duplicate files. Each line has the format: <number of dupes> <number of related dirs> <dir path>
     ListDirs,
@@ -91,7 +95,10 @@ fn main() {
     env_logger::Builder::new().filter_level(log_level).init();
 
     let exit_code = match &cli.command {
-        Commands::RelatedDirs { directory } => cmd_related_dirs::handle_cmd(&report, directory),
+        Commands::RelatedDirs {
+            directory,
+            show_shared_dupes,
+        } => cmd_related_dirs::handle_cmd(&report, directory, *show_shared_dupes),
         Commands::ListDirs => cmd_list_dirs::handle_cmd(&report),
         Commands::Dupes { file } => cmd_dupes::handle_cmd(&report, file),
         Commands::DupeDirs { directories } => cmd_dupe_dirs::handle_cmd(&report, directories),
